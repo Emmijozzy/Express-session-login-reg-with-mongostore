@@ -18,7 +18,11 @@ app.get("/", (req, res) => {
   // req.session.key = value
   req.session.name = 'Emmijozzy'
   console.log(process.env.NODE_ENV == 'production')
-  return res.send("Session set")
+  if(process.env.NODE_ENV == 'production') {
+    return res.send("Session on production set")
+  } else {
+    return res.send("Session set")
+  }
 })
 
 app.get('/home', (req, res) => {
