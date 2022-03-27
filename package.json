@@ -4,7 +4,8 @@
   "description": "Using express session for registration and login of user and keep their state alive",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [
     "express",
