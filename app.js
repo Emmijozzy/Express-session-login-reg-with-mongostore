@@ -5,7 +5,7 @@ const session = require('express-session');
 const app = express()
 
 // Global var
-const port = 8080
+const port = process.env.PORT || 8080
 
 // Session setup
 app.use( session( {
