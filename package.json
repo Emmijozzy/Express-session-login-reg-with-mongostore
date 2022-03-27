@@ -1,0 +1,23 @@
+{
+  "name": "express_login_system",
+  "version": "1.0.0",
+  "description": "Using express session for registration and login of user and keep their state alive",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "session",
+    "npm",
+    "login",
+    "registration"
+  ],
+  "author": "Ogunsuyi Joseph Oluwaseun",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2"
+  }
+}
