@@ -2,6 +2,10 @@
 require('dotenv').config()
 const express = require('express');
 const session = require('express-session');
+const bodyParser = require('body-parser');
+const MongoStore = require('connect-mongo')
+const router = require('./app/routes/index')
+const mongdb = require('./app/models/config');
 const app = express()
 
 // Global var
@@ -10,35 +14,33 @@ const port = process.env.PORT || 8080
 // Session setup
 app.use( session( {
   secret: 'Emmijozzy360',
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 14 * 24 * 60 * 60, // Time to live
+    autoRemove: 'native'
+   }),
+  cookie: {expires: new Date(Date.now() + 86400 * 1000) }
 }));
 
-app.get("/", (req, res) => {
-  // req.session.key = value
-  req.session.name = 'Emmijozzy'
-  console.log(process.env.NODE_ENV == 'production')
-  if(process.env.NODE_ENV == 'production') {
-    return res.send("Session on production set")
-  } else {
-    return res.send("Session set")
-  }
-})
-
-app.get('/home', (req, res) => {
-  const name = req.session.name
-  return res.send(name)
-})
-
-app.get('/logout', async (req, res) => {
-  const del = await req.session.destroy();
-  res.clearCookie('connect.sid')
-  console.log(del)
-  return res.send("Session Destroyed")
-})
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 
-app.listen(port, (err) => {
-  if(err) throw err
-  console.log("app listening to port:" + port)
-})
+// route
+app.use('/', router)
+
+
+// app initialization
+mongdb()
+  .then( () => {
+    app.listen(port, (err) => {
+      if(err) throw err
+      console.log("app listening to port:" + port)
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
